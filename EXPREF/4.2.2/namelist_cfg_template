@@ -243,7 +243,7 @@
             cn_tide_load = 'tide_LOAD_grid_T.nc'  ! filename for load potential
             !
       ln_tide_ramp  = XXX_RMP_XXX,               !  Use linear ramp for tides at startup
-         rn_tide_ramp_dt = 28.               !  ramp duration in days
+         rn_tide_ramp_dt = 1.               !  ramp duration in days
 !     ln_calc_tdiss = XXX_CTD_XXX ,   ! calculate tdiss rather than reading in
 !        cn_h_rough = 'INPUTS/h_RMS_topog_anom.nc', ! roughness file
 !        rn_kappa_tdiss = 0.00075398 ! x12 value  0.00006283,  ! wave number Jayne and Laurence 2004 value !282.74333! increasedwith x1500^2 x2
