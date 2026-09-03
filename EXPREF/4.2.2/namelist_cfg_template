@@ -741,7 +741,7 @@
    nn_jctle    =    0             !  end   j indice of control
    nn_isplt    =    1             !  number of processors in i-direction
    nn_jsplt    =    1             !  number of processors in j-direction
-   ln_timing   =.true.,          !  timing by routine write out in timing.output file
+   ln_timing   =.false.,          !  timing by routine write out in timing.output file
    ln_diacfl   =.false.,          !  CFL diagnostics write out in cfl_diagnostics.ascii
    ln_umax_ind =.false.,
 /
