@@ -15,7 +15,10 @@ git clone git@github.com:NOC-MSM/NAARC.git
 cd NAARC_RUNS/nemo/cfgs/NAARC//
 cp -rP EXPREF EXP_MYRUN
 cd EXP_MYRUN
-ln -s ../INPUTS/domain_cfg_mes.nc domain_cfg.nc
+ln -s ../INPUTS/domain_cfg_zps_agrif.nc domain_cfg.nc
+ln -s ../INPUTS/1_domain_cfg_zps.nc 1_domain_cfg.nc
+ln -s ../INPUTS/AGRIF_FixedGrids.in .
+ln -s ../INPUTS/1_bfr_cdmin_2d.nc .
 ```
 or if using ANEMONE, replace use options:
 ```
