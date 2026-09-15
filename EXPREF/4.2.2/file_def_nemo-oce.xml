@@ -7,6 +7,27 @@
 =                                         put the variables you want...                                    =
 ============================================================================================================
     -->
+    <file_definition type="one_file" name="OUTPUTS/@expname@_@freq@_@startdate@_@enddate@" sync_freq="1d" min_digits="4">
+      <file_group id="2h" output_freq="2h"  output_level="10" enabled=".TRUE."> <!-- 1h files -->
+
+        <file id="file99" name_suffix="_grid_T" mode="write" description="global means" enabled=".true." >
+          <field field_ref="ssh"          name="zos"       />
+
+          <field field_ref="sst_con"  />
+          <field field_ref="sss_abs"  />
+
+        </file>
+
+        <file id="file9" name_suffix="_grid_U" mode="write" description="ocean U grid variables" enabled=".true." >
+          <field field_ref="ssu"          name="sozocrtx"   />
+        </file>
+
+        <file id="file10" name_suffix="_grid_V" mode="write" description="ocean V grid variables" enabled=".true." >
+          <field field_ref="ssv"          name="somecrty"   />
+        </file>
+
+      </file_group>
+    </file_definition>
    
     <file_definition type="one_file" name="@expname@_@freq@_@startdate@_@enddate@" sync_freq="1mo" min_digits="4">
     
