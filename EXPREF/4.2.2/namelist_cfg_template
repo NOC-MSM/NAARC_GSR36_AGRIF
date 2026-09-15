@@ -229,6 +229,13 @@
    cn_shlat2d_var='shlat2d',
 /
 !-----------------------------------------------------------------------
+&namagrif      !  AGRIF zoom                                            ("key_agrif")
+!-----------------------------------------------------------------------
+   ln_agrif_2way = .true.
+   ln_vert_remap = .true., !  use vertical remapping
+   ln_chk_bathy  = .true.
+/
+!-----------------------------------------------------------------------
 &nam_tide      !   tide parameters                                      (default: OFF)
 !-----------------------------------------------------------------------
    ln_tide     = XXX_TID_XXX,      ! Activate tides
@@ -243,7 +250,7 @@
             cn_tide_load = 'tide_LOAD_grid_T.nc'  ! filename for load potential
             !
       ln_tide_ramp  = XXX_RMP_XXX,               !  Use linear ramp for tides at startup
-         rn_tide_ramp_dt = 1.               !  ramp duration in days
+         rn_tide_ramp_dt = 0.5               !  ramp duration in days
 !     ln_calc_tdiss = XXX_CTD_XXX ,   ! calculate tdiss rather than reading in
 !        cn_h_rough = 'INPUTS/h_RMS_topog_anom.nc', ! roughness file
 !        rn_kappa_tdiss = 0.00075398 ! x12 value  0.00006283,  ! wave number Jayne and Laurence 2004 value !282.74333! increasedwith x1500^2 x2
@@ -369,13 +376,13 @@
 &nambdy_tide   !  tidal forcing at open boundaries                      (default: OFF)
 !-----------------------------------------------------------------------
    filtide          = './INPUTS/NAARC_NP/NAARC_bdytide_FES2014_'   !  file name root of tidal forcing files
-   ln_bdytide_2ddta = .false.,                   !
+   ln_bdytide_2ddta =.false.,                   !
 /
 !-----------------------------------------------------------------------
 &nambdy_tide   !  tidal forcing at open boundaries                      (default: OFF)
 !-----------------------------------------------------------------------
    filtide          = './INPUTS/NAARC_NA/NAARC_bdytide_FES2014_'   !  file name root of tidal forcing files
-   ln_bdytide_2ddta = .false.,                   !
+   ln_bdytide_2ddta =.false.,                   !
 /
 !!======================================================================
 !!                ***  Top/Bottom boundary condition  ***             !!
@@ -663,8 +670,8 @@
    rn_ucf      =   86400.      !  unit conversion factor (=1 -> /seconds ; =86400. -> /day)
    cn_trdrst_in      = 'restart_mld'   ! suffix of ocean restart name (input)
    cn_trdrst_out     = 'restart_mld'   ! suffix of ocean restart name (output)
-   ln_trdmxl_restart = .false.         !  restart for ML diagnostics
-   ln_trdmxl_instant = .true.         !  flag to diagnose trends of instantantaneous or mean ML T/S
+   ln_trdmxl_restart =.false.,         !  restart for ML diagnostics
+   ln_trdmxl_instant =.true.,         !  flag to diagnose trends of instantantaneous or mean ML T/S
    rn_rho_c = 0.01
 &namhsb        !  Heat and salt budgets                                 (default: OFF)
 !-----------------------------------------------------------------------
