@@ -85,7 +85,7 @@
 &namtsd        !    Temperature & Salinity Data  (init/dmp)             (default: OFF)
 !-----------------------------------------------------------------------
    !                       ! =T  read T-S fields for:
-   ln_tsd_init =.true.,         !  ocean initialisation
+   ln_tsd_init =.false.,         !  ocean initialisation
    ln_tsd_interp=.true.,
 
    cn_dir      = './INPUTS/'      !  root directory for the T-S data location
@@ -245,7 +245,7 @@
 !-----------------------------------------------------------------------
 &nam_tide      !   tide parameters                                      (default: OFF)
 !-----------------------------------------------------------------------
-   ln_tide     = .true.,      ! Activate tides
+   ln_tide     = .false.,      ! Activate tides
       nn_tide_var   = 1          !  Variant of tidal parameter set and tide-potential computation
       !                          !     (1: default; 0: compatibility with previous versions)
       ln_tide_dia   =.true.,    !  Enable tidal diagnostic output
@@ -257,7 +257,7 @@
             cn_tide_load = 'tide_LOAD_grid_T.nc'  ! filename for load potential
             !
       ln_tide_ramp  = .true.,               !  Use linear ramp for tides at startup
-         rn_tide_ramp_dt = 1.               !  ramp duration in days
+         rn_tide_ramp_dt = 0.5               !  ramp duration in days
 !     ln_calc_tdiss = .false. ,   ! calculate tdiss rather than reading in
 !        cn_h_rough = 'INPUTS/h_RMS_topog_anom.nc', ! roughness file
 !        rn_kappa_tdiss = 0.00075398 ! x12 value  0.00006283,  ! wave number Jayne and Laurence 2004 value !282.74333! increasedwith x1500^2 x2
