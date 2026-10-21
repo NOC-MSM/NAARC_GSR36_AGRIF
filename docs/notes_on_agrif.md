@@ -10,8 +10,9 @@ Follow step (2) to make and edit the 1_namelist_cfg. Copy the namelist_ref.
 ```
 cp namelist_ref 1_namelist_ref
 ```
+Edit namelist_cfg to use the desired parent domain_cfg.nc.
 
-build_domains.slurm executes make_domain_cfg.exe so first link to a compiled make_domain_cfg.exe from NEMO TOOLS. This has been compiled with NEMO v5.0 (namelist) and key_agrif in cpp_DOMAINcfg.fcm. The compiler on ARCHER2 was arch-X86_ARCHER2-Cray-xios3.fcm.
+To build the domain, build_domains.slurm executes make_domain_cfg.exe so first link to a compiled make_domain_cfg.exe from NEMO TOOLS. This has been compiled with NEMO v5.0 (namelist) and key_agrif in cpp_DOMAINcfg.fcm. The compiler on ARCHER2 was arch-X86_ARCHER2-Cray-xios3.fcm.
 ```
 ln -s /work/n01/n01/benbar/GSR36_AGRIF/NEMO_v5/nemo/tools/DOMAINcfg/make_domain_cfg.exe make_domain_cfg.exe
 
@@ -67,9 +68,11 @@ sbatch run_smooth.sh
 Follow step 4 to re-generate the 1_domain_cfg.nc with new bathymetry.
 
 Generate forcing weights.
+```
 source /work/n01/n01/benbar/agrif/bin/activate
-python create_weights.py
 
+python create_weights.py
+```
 
 Generate initial conditions for tests, constant and gradient.
 
