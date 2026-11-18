@@ -3,7 +3,7 @@
 Using instructions here:
 https://github.com/JMMP-Group/PROMOTE-WP7/wiki/Building-the-PROMOTE%E2%80%90WP7-AGRIF-zoom
 
-###1) Set the AGRIF_FixedGrids.in as: 
+### 1) Set the AGRIF_FixedGrids.in as: 
 
 ```
 1
@@ -11,7 +11,7 @@ https://github.com/JMMP-Group/PROMOTE-WP7/wiki/Building-the-PROMOTE%E2%80%90WP7-
 0
 ```
 
-###2) Build the zoom with exactly the same bathymetry of the parent
+### 2) Build the zoom with exactly the same bathymetry of the parent
 
 Beginning with a set of files. The "file set" is located on ARCHER2 here:
 /work/n01/n01/atb299/NAARC_AGRIF
@@ -52,6 +52,16 @@ Then edit &namdom in 1_namelist_cfg such that:
    nn_msh      =    0      !  create (=1) a mesh file or not (=0)
 ```
 
+Then edit &namcfg in 1_namelist_cfg for the grid dimensions. The i and j sizes need to be calculated using values in AGRIF_FixedGrids.in:  ((parent_i2 - parent_i1) * refinemnet_factor) + 8.
+```
+   jpidta = 1478
+   jpjdta = 1505
+...
+   Ni0glo = 1478
+   Nj0glo = 1505
+
+```
+
 To build the domain, build_domains.slurm executes make_domain_cfg.exe so first link to a compiled make_domain_cfg.exe from NEMO TOOLS. This has been compiled with NEMO v5.0 (namelist) and key_agrif in cpp_DOMAINcfg.fcm. The compiler on ARCHER2 was arch-X86_ARCHER2-Cray-xios3.fcm.
 
 ```
@@ -64,7 +74,7 @@ It should be possible in 20 minutes to make and rebuild the domain_cfg or mesh_m
 
 Plot and check domain.
 
-###3) Update the bathymetry to GEBCO_2021
+### 3) Update the bathymetry to GEBCO_2021
 
 On to step (3). Update bathy to gebco. 
 
@@ -100,7 +110,19 @@ out="1_bathy_meter_3m_FillZero.nc"
 ncatted -a _FillValue,Bathymetry,m,d,0.0 ${inp} ${out}
 ```
 
-Follow the rest of step (3) or
+Set namelist_shapiro.txt:
+```
+cat > namelist_shapiro.txt << 'EOF'
+&nam_shapiro
+ll_npol_fold = .FALSE.
+ll_cycl = .FALSE.
+l_pass_shallow_updates = .TRUE.
+l_pass_fixed_pt_updates = .FALSE.
+zmin_val = 8.0
+/
+EOF
+```
+
 Link the executable:
 ```
 ln -s /work/n01/n01/atb299/CDFTOOLS_4.0_ISF/bin/cdfsmooth cdfsmooth
@@ -108,9 +130,50 @@ ln -s /work/n01/n01/atb299/CDFTOOLS_4.0_ISF/bin/cdfsmooth cdfsmooth
 sbatch run_smooth.sh
 ```
 
-Follow step 4 to re-generate the 1_domain_cfg.nc with new bathymetry.
+### 4) Generate the 3 geometry of the parent and the zoom 
 
-Generate forcing weights.
+Link the relevant files to generate the zoom domcfg:
+
+```
+ln -s 1_bathy_meter_3m_FillZero.ncS21TT 1_bathy_meter.nc
+ln -s 1_mesh_mask.nc 1_coordinates.nc
+```
+
+Update 1_namelist_cfg as follows:
+```
+!-----------------------------------------------------------------------
+&namdom        !   space and time domain (bathymetry, mesh, timestep)   
+!-----------------------------------------------------------------------
+   ...
+
+   nn_bathy    =    1      ! = 0 compute analyticaly
+                           ! = 1 read the bathymetry file
+                           ! = 2 compute from external bathymetry
+                           ! = 3 compute from parent (if "key_agrif")
+   nn_interp   =    1                          ! type of interpolation (nn_bathy =2)
+   cn_domcfg   =  ''
+   cn_fcoord   =  'coordinates.nc'             ! external coordinates file (jphgr_msh = 0)
+   cn_topo     =  'bathy_meter.nc'             ! external topo file (nn_bathy =1)
+   cn_bath     =  'Bathymetry'                 ! topo name in file  (nn_bathy =1)
+   cn_lon      =  'nav_lon'                    ! lon  name in file  (nn_bathy =1)
+   cn_lat      =  'nav_lat'                    ! lat  name in file  (nn_bathy =1)
+   rn_scale    = 1
+   rn_bathy    =    0.     !  value of the bathymetry. if (=0) bottom flat at jpkm1
+   nn_msh      =    1      !  create (=1) a mesh file or not (=0)
+   jphgr_msh   =    0                    !  type of horizontal mesh
+
+   ...
+
+   ln_vert_remap = .true. ! volume conserving update
+
+   ...
+```
+
+Generate the 3D mesh and rebuild the outputs:
+sbatch build_domains.slurm
+
+
+### 5) Generate forcing weights.
 ```
 source /work/n01/n01/benbar/agrif/bin/activate
 
